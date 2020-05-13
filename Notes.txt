@@ -1,0 +1,35 @@
+runs on npm run dev
+<Link> 
+  -wraps around <a>
+  -client side routing
+
+static assets in "public" folder
+
+To use global CSS, import a CSS file in pages/_app.js.
+
+Static Generation is not a good idea if you cannot pre-render a page ahead of a user's request. Maybe your page shows frequently updated data, and the page content changes on every request.
+
+In that case, you can use Server-Side Rendering. It will be slower, but the pre-rendered page will always be up-to-date. Or you can skip pre-rendering and use client-side JavaScript to populate data.
+
+getStaticProps allows you to tell Next.js: “This page has some data dependencies — so when you pre-render this page at build time, make sure to resolve them first!”
+
+getStaticProps runs only on the server-side. It will never be run on the client-side. It won’t even be included in the JS bundle for the browser. That means you can write code such as direct database queries without them being sent to browsers. Because it’s meant to be run at build time, you won’t be able to use data that’s only available during request time, such as query parameters or HTTP headers.
+
+Client-side Rendering
+If you do not need to pre-render the data, you can also use the following strategy (called Client-side Rendering):
+Statically generate (pre-render) parts of the page that do not require external data.
+When the page loads, fetch external data from the client using JavaScript and populate the remaining parts.
+
+This approach works well for user dashboard pages, for example. Because a dashboard is a private, user-specific page, SEO is not relevant, and the page doesn’t need to be pre-rendered. The data is frequently updated, which requires request-time data fetching.
+
+The team behind Next.js has created a React hook for data fetching called SWR. We highly recommend it if you’re fetching data on the client side. It handles caching, revalidation, focus tracking, refetching on interval, and more.
+
+packages: remark for markdown
+gray-matter: parses metadata in markdown file
+
+In development (npm run dev or yarn dev), getStaticPaths runs on every request.
+In production, getStaticPaths runs at build time.
+
+To create a custom 404 page, create pages/404.js. This file is statically generated at build time.
+
+Next.js has support for API Routes, which lets you easily create an API endpoint as a Node.js function
